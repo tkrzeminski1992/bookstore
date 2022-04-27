@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="html_header">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Książka</title>
+
+</head>
+<body>
+    <div id="main" style="width:90%;margin:0 auto;">
+        <div th:style=" ${correct==false} ?'border:2px solid red;width:50%; margin:0 auto 25px auto;color:red;text-align: center;':'display:none;border:2px solid red;width:50%; margin:0 auto 25px auto;color:red;text-align: center;'">
+            <div id="mainErrorDIV" style="margin: 10px 0px 10px 0px;" th:text="${message}"></div>
+        </div>
+        <!--/*@thymesVar id="book" type="com.example.bookstore.restApi.dao.entity.Book"*/-->
+        <form id="book_form" method="post" th:action="@{/booklist}" th:object="${book}" style="width:50%; margin: 0 auto;">
+            <input type="hidden" name="id" id="id" th:field="*{id}">
+            <fieldset>
+             <legend>Książka</legend>
+                <label>
+                    Tytuł:
+                    <input id="title" name="title" type="text" th:field="*{title}">
+                </label>
+                <label>
+                    Autor:
+                    <input id="author" name="author" type="text" th:field="*{author}">
+                </label>
+            </fieldset>
+
+            <div id="buttons" style="margin-top:10px;margin-right:10%;">
+                <a href="javascript:saveBook()" class="btn btn-secondary active" role="button" aria-pressed="true" style="float:right;margin-left:5px;">Dodaj</a>
+                <a href="javascript:clearForm()" class="btn btn-primary active" role="button" aria-pressed="true" style="float:right;margin-right:5px;">Wyczyść</a>
+            </div>
+
+
+        </form>
+    </div>
+
+<script>
+    function saveBook(){
+        var confirmResult
+
+        if(document.getElementById("title").value=='' || document.getElementById("author").value==''){
+            alert("Nie wszystkie pola zostały uzupełnione.");
+            return
+
+        }
+
+        if(document.getElementById("id").value==''){
+            confirmResult = confirm("Czy chcesz dodać nową książkę?");
+        }else{
+            confirmResult = confirm("Czy chcesz zapisać zmiany?");
+        }
+
+        if(confirmResult) {
+            document.getElementById('book_form').submit();
+        }
+
+    }
+
+    function clearForm(){
+        document.getElementById("title").value='';
+        document.getElementById("author").value='';
+    }
+</script>
+
+
+</body>
+</html>
